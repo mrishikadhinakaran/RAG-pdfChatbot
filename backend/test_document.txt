@@ -1,0 +1,1 @@
+This is a test document for the PDF Chatbot application. The application uses Retrieval-Augmented Generation (RAG) to answer questions about PDF documents. It processes PDF files and allows users to ask questions about their content.

@@ -59,46 +59,27 @@ export async function uploadFile(file: File, onProgress?: (progress: number) => 
     const formData = new FormData();
     formData.append("file", file);
 
-    // Create a custom fetch request to track progress
-    const xhr = new XMLHttpRequest();
-    
-    return new Promise((resolve, reject) => {
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable && onProgress) {
-          const progress = Math.round((event.loaded / event.total) * 100);
-          onProgress(progress);
-        }
-      });
-      
-      xhr.addEventListener("load", () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          try {
-            const response = JSON.parse(xhr.responseText);
-            resolve(response);
-          } catch (e) {
-            reject(new Error("Invalid response from server"));
-          }
-        } else {
-          if (xhr.status === 401) {
-            reject(new Error("Authentication required. Please login."));
-          } else if (xhr.status === 413) {
-            reject(new Error("File too large. Please upload a smaller file."));
-          } else {
-            reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
-          }
-        }
-      });
-      
-      xhr.addEventListener("error", () => {
-        reject(new Error("Network error. Please check your connection."));
-      });
-      
-      xhr.open("POST", `${API_BASE}/upload`);
-      if (authToken) {
-        xhr.setRequestHeader("Authorization", `Basic ${authToken}`);
-      }
-      xhr.send(formData);
+    // Use fetch with progress tracking
+    const response = await fetch(`${API_BASE}/upload`, {
+      method: "POST",
+      headers: {
+        ...(authToken && { "Authorization": `Basic ${authToken}` })
+      },
+      body: formData,
     });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error("Authentication required. Please login.");
+      } else if (response.status === 413) {
+        throw new Error("File too large. Please upload a smaller file.");
+      } else {
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      }
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error: any) {
     console.error("Error uploading file:", error);
     

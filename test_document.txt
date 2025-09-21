@@ -1,0 +1,1 @@
+This is a test PDF document for the PDF Chatbot application. It contains sample text that can be used to test the RAG pipeline functionality.

@@ -23,11 +23,20 @@ const Dashboard = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"chat" | "documents" | "settings">("chat");
   const [documents, setDocuments] = useState<Document[]>([]);
-  const [temperature, setTemperature] = useState<number>(0.1); // Lower default for clearer answers
-  const [model, setModel] = useState<string>("Flan-T5 Small");
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [temperature, setTemperature] = useState<number>(() => {
+    const saved = localStorage.getItem('pdf-chatbot-temperature');
+    return saved ? parseFloat(saved) : 0.1;
+  });
+  const [model, setModel] = useState<string>(() => {
+    const saved = localStorage.getItem('pdf-chatbot-model');
+    return saved || "Flan-T5 Small";
+  });
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('pdf-chatbot-darkMode');
+    return saved === 'true';
+  });
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [processingStage, setProcessingStage] = useState<string>(""); // For detailed processing status
+  const [processingStage, setProcessingStage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -35,6 +44,19 @@ const Dashboard = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('pdf-chatbot-temperature', temperature.toString());
+  }, [temperature]);
+
+  useEffect(() => {
+    localStorage.setItem('pdf-chatbot-model', model);
+  }, [model]);
+
+  useEffect(() => {
+    localStorage.setItem('pdf-chatbot-darkMode', darkMode.toString());
+  }, [darkMode]);
 
   // Load documents and status on component mount
   useEffect(() => {
