@@ -90,6 +90,28 @@ A chatbot application that allows users to upload PDF documents and ask question
 4. Wait for the document to be processed
 5. Ask questions about the content of your document in the chat interface
 
+## Deployment to GitHub
+
+To deploy this project to GitHub:
+
+1. Create a new repository on GitHub at https://github.com/new
+   - Don't initialize with a README, .gitignore, or license
+   - Name your repository (e.g., "pdf-chatbot")
+
+2. Run the deployment script:
+   ```bash
+   ./deploy_to_github.sh
+   ```
+
+3. Follow the prompts to enter your GitHub username and repository name
+
+Alternatively, you can manually deploy:
+```bash
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git push -u origin main
+```
+
 ## Improvements Made
 
 1. Enhanced error handling throughout the application with user-friendly messages
