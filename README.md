@@ -6,6 +6,8 @@ A chatbot application that allows users to upload PDF documents and ask question
 
 ```
 .
+├── api/
+│   └── index.py         # Vercel entrypoint
 ├── backend/
 │   ├── main.py              # FastAPI application
 │   ├── requirements.txt     # Python dependencies
@@ -21,6 +23,7 @@ A chatbot application that allows users to upload PDF documents and ask question
 │   │   ├── api.ts           # API helper functions
 │   │   └── App.tsx          # Main application component
 │   └── package.json         # Frontend dependencies
+├── vercel.json              # Vercel deployment configuration
 └── README.md
 ```
 
@@ -111,6 +114,22 @@ git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
 git push -u origin main
 ```
+
+## Vercel Deployment
+
+This project is configured for deployment to Vercel. The configuration includes:
+
+1. `vercel.json` - Defines the build and routing configuration for the Python backend
+2. `api/index.py` - Vercel entrypoint that imports the FastAPI application
+3. Root `requirements.txt` - Contains only the essential runtime dependencies
+
+To deploy to Vercel:
+
+1. Push your code to a GitHub repository
+2. Connect the repository to Vercel
+3. Vercel will automatically detect and deploy the application using the configuration files
+
+The backend API will be available at the root of your Vercel deployment, and all the FastAPI endpoints will be accessible as defined in `backend/main.py`.
 
 ## Improvements Made
 

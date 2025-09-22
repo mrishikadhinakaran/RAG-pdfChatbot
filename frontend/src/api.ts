@@ -1,4 +1,6 @@
-const API_BASE = "http://127.0.0.1:8003";
+// For development, use the local backend server
+// For production (Vercel), use relative paths since frontend and backend are served from the same domain
+const API_BASE = '';
 
 // Store authentication token
 let authToken: string | null = null;
